@@ -5,6 +5,7 @@ import (
 )
 
 func main() {
+	// non buffered channels
 	messages := make(chan string)
 	signals := make(chan bool)
 
