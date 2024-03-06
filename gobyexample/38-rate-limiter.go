@@ -6,16 +6,42 @@ import (
 )
 
 func main()  {
-	requests := make(chan int, 5)
-	for i := 1;i <= 5; i++ {
-		requests<- i
+	// Single rate limiter
+	// requests := make(chan int, 5)
+	// for i := 1;i <= 5; i++ {
+	// 	requests<- i
+	// }
+	// close(requests)
+
+	// limiter := time.Tick(200 * time.Millisecond)
+
+	// for request := range requests {
+	// 	<-limiter
+	// 	fmt.Println("Serving request:", request)
+	// }
+
+	// bursty rate limiter
+	burstyLimiter := make(chan time.Time, 3)
+	for i := 1;i <= 3; i++ {
+		burstyLimiter<- time.Now()
 	}
-	close(requests)
 
-	limiter := time.Tick(200 * time.Millisecond)
+	go func() {
+		for t := range time.Tick(200 * time.Millisecond) {
+			fmt.Println("go func")
+			burstyLimiter<- t
+		}
+	}()
 
-	for request := range requests {
-		<-limiter
-		fmt.Println("Serving request:", request)
+	burstyRequests := make(chan int, 5)
+	for i := 1;i <= 5; i++ {
+		burstyRequests<- i
+	}
+	close(burstyRequests)
+
+	for request := range burstyRequests {
+		<-burstyLimiter
+		fmt.Println("Serving requests")
+		fmt.Println("request:", request)
 	}
 }
