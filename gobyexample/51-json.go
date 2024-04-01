@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"encoding/json"
-	// "reflect"
+	"reflect"
 	"os"
 )
 
@@ -14,8 +14,8 @@ type response1 struct {
 }
 
 type response2 struct {
-	Page int		`json:"page"`
-	Fruits []string	`json:"fruits"`	
+	Page int		`json:"p"`
+	Fruits []string	`json:"f"`	
 }
 
 func main() {
@@ -62,11 +62,12 @@ func main() {
 
 	strs := data["strs"].([]interface{})
 	str0 := strs[0].(string)
-	fmt.Println(str0)
+	fmt.Println("str0>>>", str0)
 
-	str := `{"page": "int", "fruits": ["apple", "peach"]}`
+	str := `{"p": 2, "f": ["apple", "peach"]}`
 	res := response2{}
 	json.Unmarshal([]byte(str), &res)
+	fmt.Println(res)
 	fmt.Println(res.Fruits[0], reflect.TypeOf(res.Page), res.Page)
 
 	d1 := map[string]int{"one": 1, "two": 2, "three": 3, "four": 4}
