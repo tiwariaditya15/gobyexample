@@ -1,9 +1,50 @@
 package main
 
 import (
-	
+	"bufio"
+	"os"
+	"fmt"
 )
 
-func main() {
-
+func check(err error) {
+	if err != nil {
+		panic(err)
+	}
 }
+
+func main() {
+	str := []byte("hello golang\nI am js dev")
+	err := os.WriteFile("/tmp/myself.txt", str, 0644)
+	check(err)
+	fmt.Println("Write op completed.")
+
+	f, err1 := os.Create("/tmp/myself1.txt")
+	check(err1)
+
+	defer f.Close()
+
+	d2 := []byte("Aditya is UI engineer")
+	n2, err2 := f.Write(d2)
+	check(err2)
+	fmt.Printf("wrote %d bytes\n", n2)
+
+
+	f.WriteString(" and knows bit of node+go\n")
+
+	// writes to stable storage
+	f.Sync()
+
+	w := bufio.NewWriter(f)
+	w.WriteString(" and this is buffered write here using bufio. :)\n")
+
+	// to ensure all buffered operations have been applied to underlying writer
+	w.Flush()
+}
+
+
+
+/** 
+		You can use following things to write to storage
+			1. os
+			2. bufio
+*/

@@ -43,8 +43,17 @@ func main() {
 	check(err)
 	fmt.Printf("%d bytes @ %d: %s\n", n3, o3, string(b3[:n3]))
 
+	f.Seek(0, 0)
 	r4 := bufio.NewReader(f)
-	b4, err := r4.Peek(8)
+	b4, err := r4.Peek(10)
 	check(err)
 	fmt.Printf("%s", string(b4))
 }
+
+
+/** 
+		You can use following things to read from storage
+			1. os
+			2. io
+			3. bufio
+*/
