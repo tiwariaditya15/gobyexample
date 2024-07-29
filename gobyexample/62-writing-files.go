@@ -37,8 +37,18 @@ func main() {
 	w := bufio.NewWriter(f)
 	w.WriteString(" and this is buffered write here using bufio. :)\n")
 
+	f2, err2 := os.Create("./docOne.txt")
+	check(err2)
+	w2 := bufio.NewWriter(f2)
+	w2.WriteString(" and this comes from w2")
+
+	w2.Flush()
+
+
 	// to ensure all buffered operations have been applied to underlying writer
 	w.Flush()
+
+	// fmt.Println(os.Getwd())
 }
 
 
